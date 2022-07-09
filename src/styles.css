@@ -1,0 +1,15 @@
+.App {
+  font-family: sans-serif;
+  text-align: center;
+  position: relative;
+  height: 100vh;
+}
+.row {
+  display: flex;
+}
+body {
+  background: rgb(27, 27, 27);
+}
+.result {
+  color: white;
+}
