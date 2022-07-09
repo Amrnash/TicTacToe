@@ -10,19 +10,18 @@ export const Board = () => {
   );
   const [turn, setTurn] = useState("X");
   const [gameOver, setGameOver] = useState({ tie: false, win: "" });
-  const [isFullCount, setIsFullCount] = useState(0);
   useEffect(() => {
-    const { win, player } = evaluateBoard(board);
-    if (isFullCount === 9 && !gameOver.win) setGameOver({ tie: true, win: "" });
+    const { win, player, numberOfPlays } = evaluateBoard(board);
+    console.log(numberOfPlays.count)
+    if (numberOfPlays.count === 9 && !gameOver.win) setGameOver({ tie: true, win: "" });
     if (win) setGameOver({ tie: false, win: player });
-  }, [turn, board, isFullCount]);
+  }, [turn, board]);
   const handleClickTile = (e) => {
     if (!e.target.classList.contains("tile")) return;
     const tileIdx = e.target.getAttribute("data-idx").split(",");
     const x = tileIdx[0];
     const y = tileIdx[1];
     const currentBoard = copyBoard(board);
-    setIsFullCount((prevCount) => ++prevCount);
     if (turn === "X") {
       currentBoard[x][y] = "X";
       setBoard(currentBoard);
@@ -37,7 +36,6 @@ export const Board = () => {
     const newBoard = Array.from(new Array(3), () => new Array(3).fill(""));
     setGameOver({ tie: false, win: ""})
     setBoard(newBoard)
-    setIsFullCount(0);
     setTurn("X");
   }
   return (

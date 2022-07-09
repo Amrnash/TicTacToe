@@ -6,4 +6,3 @@ export const Button = ({ text, ...props }) => {
         </button>
     )
 }
-// 01050888888
