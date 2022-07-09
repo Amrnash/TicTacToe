@@ -3,16 +3,18 @@ import { Tile } from "./Tile";
 import { Button } from "./Button";
 import { copyBoard } from "../utilities/copyBoard";
 import { evaluateBoard } from "../utilities/evaluateBoard";
+import { useLocalStorage } from '../hooks/useLocalStorage';
 import "./Board.css";
 export const Board = () => {
-  const [board, setBoard] = useState(
-    Array.from(new Array(3), () => new Array(3).fill(""))
-  );
-  const [turn, setTurn] = useState("X");
-  const [gameOver, setGameOver] = useState({ tie: false, win: "" });
+  // const [board, setBoard] = useState(
+  //   Array.from(new Array(3), () => new Array(3).fill(""))
+  // );
+  // const [turn, setTurn] = useState("X");
+  // const [gameOver, setGameOver] = useState({ tie: false, win: "" });
+  const {board, turn, gameOver, setBoard, setGameOver, setTurn} = useLocalStorage()
   useEffect(() => {
     const { win, player, numberOfPlays } = evaluateBoard(board);
-    console.log(numberOfPlays.count)
+    console.log(numberOfPlays)
     if (numberOfPlays.count === 9 && !gameOver.win) setGameOver({ tie: true, win: "" });
     if (win) setGameOver({ tie: false, win: player });
   }, [turn, board]);
@@ -24,10 +26,14 @@ export const Board = () => {
     const currentBoard = copyBoard(board);
     if (turn === "X") {
       currentBoard[x][y] = "X";
+      localStorage.setItem('board', JSON.stringify(board));
+      localStorage.setItem('turn', JSON.stringify(turn));
       setBoard(currentBoard);
       setTurn("O");
     } else {
       currentBoard[x][y] = "O";
+      localStorage.setItem('board', JSON.stringify(board));
+      localStorage.setItem('turn', JSON.stringify(turn));
       setBoard(currentBoard);
       setTurn("X");
     }

@@ -6,13 +6,17 @@ export const useLocalStorage = () => {
   );
   const [turn, setTurn] = useState("X");
   const [gameOver, setGameOver] = useState({ tie: false, win: "" });
-  const [isFullCount, setIsFullCount] = useState(0);
   useEffect(() => {
     const board = JSON.parse(localStorage.getItem("board"));
-    if (board) {
+    const turn = JSON.parse(localStorage.getItem("turn"));
+    if (board && turn) {
       const { win, player, numberOfPlays } = evaluateBoard(board);
       setBoard(board);
-      setTurn("X");
+      setTurn(turn);
+      if (numberOfPlays.count === 9 && !gameOver.win)
+        setGameOver({ tie: true, win: "" });
+      if (win) setGameOver({ tie: false, win: player });
     }
   }, []);
+  return { board, turn, gameOver, setBoard, setGameOver, setTurn };
 };
